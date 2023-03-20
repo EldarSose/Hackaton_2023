@@ -1,13 +1,23 @@
 # iCare
+This project took first place on BEST Hackaton 2023. This project was made by:
+ -Eldar Sose,
+ -Ensar Lizde,
+ -Lejla Maric
+e
 <br />
 
-## About the project
-Aplikacija se bavi olaksanjem procesa automatizacije pametne kuce s naglaskom na brigu i skrb o dementnim osobama. 
+## O projektu
+Aplikacija se bavi olaksanjem procesa automatizacije pametne kuce s naglaskom na brigu i skrb o dementnim i starim osobama. 
 
+Plan kojim bi se u potpunosti realizovala nasa aplikacija je spajanje mikrokontrolera sa uredjajima i na taj nacin bi se vrsila komunikacija sa istim. U planu je mobilna aplikacija kojom bi se olaksala konekcija na uredjaje skeniranjem QR koda, takodjer, mobilnom aplikacijom bi se olaksala interakcija sa pametnim uređajima. 
+
+
+
+![My Image](iCare.jpg)
 <!-- Programi -->
 ### Programi i programski jezici korišteni za izgradnju aplikacije:
 - .NET CORE (C#)
-- Flutter
+- Flutter (Dart)
 
 <!-- Pokretanje -->
 ## Pokretanje:
@@ -15,17 +25,20 @@ Aplikacija se bavi olaksanjem procesa automatizacije pametne kuce s naglaskom na
  ```sh
    git clone https://github.com/ensar4/H_repository
    ```
-2. Pokrenuti backend u Microsoft Visual-Studio programu. 
-3. Izvršiti komandu "add-migration" u package-manager console i dodati migracije.
+2. Izvršiti komandu "add-migration" u package-manager console i dodati migracije.
 ```sh
    add-migration
    ```
-4. Izvršiti komandu "update-database".
+3. Izvršiti komandu "update-database".
 ```sh
    update-database
    ```
-5. Pokrenuti aplikaciju na backendu a zatim i na front-endu preko Visual-Studio Code.
-6. Otići na main-dart koji se nalazi u lib folderu te klikom na start u gornjem desnom uglu pokrenuti aplikaciju.
+4. Pokrenuti aplikaciju na backendu u programu Microsoft Visual-Studio.
+5. Pokrenuti front-end aplikacije pomoću Visual-Studio Code obavezno preko Chrome pretraživača.
+6. Otići na main-dart koji se nalazi u lib folderu te klikom na start u gornjem desnom uglu pokrenuti aplikaciju ili u terminalu komandom "flutter run".
+```sh
+   flutter run
+   ```
 
 <!-- upotreba -->
 ## Upotreba:
