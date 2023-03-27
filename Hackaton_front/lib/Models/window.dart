@@ -17,7 +17,7 @@ class Window {
   }) {
     return Window(
       naziv: naziv ?? this.naziv,
-      id: this.id, 
+      id: id, 
       otvoren: this.otvoren,
     );
   }

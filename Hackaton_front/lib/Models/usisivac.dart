@@ -24,7 +24,7 @@ class Usisivac {
   }) {
     return Usisivac(
       naziv: naziv ?? this.naziv,
-      id: this.id, 
+      id: id, 
       stanje: this.stanje,
       vrijemeGasenja: this.vrijemeGasenja,
       vrijemePaljenja: this.vrijemePaljenja

@@ -24,10 +24,10 @@ class Doors {
   }) {
     return Doors(
       naziv: naziv ?? this.naziv,
-      id: this.id, 
+      id: id, 
       stanje: this.stanje,
       vrijemeZakljucavanja: this.vrijemeZakljucavanja,
-      vrijemeOtkljucavanja: this.vrijemeOtkljucavanja
+      vrijemeOtkljucavanja: vrijemeOtkljucavanja
     );
   }
 

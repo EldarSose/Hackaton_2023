@@ -21,7 +21,6 @@ class _LoginFormState extends State<LoginForm> {
   static final _myBox = Hive.box("myBox");
 
   void saveDataToLocalStorage(data) async {
-    print(data["kucaId"]);
     _myBox.put(1, {
       "ime": data["ime"],
       "prezime": data["prezime"],
@@ -169,7 +168,6 @@ class _LoginFormState extends State<LoginForm> {
                             
                               var personDetailsConverted  = 
                                   json.decode(personDetails);
-                                  print(personDetailsConverted);
 
                               saveDataToLocalStorage(personDetailsConverted);
                               RoleUtil(readData());

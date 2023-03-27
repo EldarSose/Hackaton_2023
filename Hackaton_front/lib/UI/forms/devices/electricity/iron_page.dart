@@ -1,13 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hackaton_front/Helper/helper.dart';
 import 'package:hackaton_front/Models/iron.dart';
-import 'package:hackaton_front/UI/forms/home_page.dart';
-import 'package:hackaton_front/UI/forms/login_page.dart';
-import 'package:hackaton_front/UI/forms/onama_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -31,183 +27,15 @@ class _IronPageState extends State<IronPage> {
   var data = RoleUtil.getData();
   String time =  DateFormat("hh:mm a").format(DateTime.now());
   String datum = DateFormat("EEEEE,dd MMMM yyyy").format(DateTime.now());
-  String selected = "Health";
-  int bpm = 60;
-  int pritisakGornji = 120;
-  int pritisakDonji = 80;
   bool svic = false;
+  int selected = 1;
 
-  @override
-  void initState() {
-    Timer.periodic(const Duration(seconds: 1),
-   (Timer t) => getRandNumber());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 10, 21, 62),
-      body: Center(
+    return SingleChildScrollView(
           child: Column(
             children: [
-              //button za dodavanje uredaja
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.03,
-                        left: 100
-                      ),
-                      child: const Icon(
-                        Icons.favorite_sharp,
-                        size: 40,
-                        color: Color.fromARGB(255, 119, 112, 121),
-                        ),
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.03,
-                            left: 20
-                          ),
-                          child: const Text("ICare",
-                          style: TextStyle(color: Color.fromARGB(255, 119, 112, 121), fontSize: 30)),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                //pozdrav za korisnika i trenutno vrijeme
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 9,
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      //ime korisnika i pozdrav
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 20,
-                            ),
-                            child: Text(
-                              "Hello ${data["ime"]} ${data["prezime"]}",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                ),
-                              ),
-                          ),
-                          const Text(
-                              "Have a nice day",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                              ),
-                          )
-                        ],
-                      ),
-                      //trenutno vrijeme
-                      Column(
-                        children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                          ),
-                          child: Text(
-                            time,
-                            style: const TextStyle(color: Colors.white,),
-                          ),
-                        ),
-                        Text(
-                          datum,
-                          style: const TextStyle(color: Colors.white,),
-                        )
-                      ]),
-                    ],
-                  ),
-                ),
-              Row(
-                children: [
-                  //navigacijski bar
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 12,
-                            left: 8
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const HomePage(),
-                                      ),
-                                    );
-                            },
-                            child: const Icon(
-                              Icons.home,
-                              color: Colors.white),
-                          ),
-                          
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 12,
-                            left: 8
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const ONamaPage(),
-                                      ),
-                                    );
-                            },
-                            child: const Icon(
-                              Icons.device_unknown,
-                              color: Colors.white),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 12,
-                            left: 8
-                          ),
-                          child: const InkWell(
-                            child: Icon(
-                              Icons.settings,
-                              color: Colors.white
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 12,
-                            left: 8
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                _myBox.clear();
-                RoleUtil.deleteDataFromBox();
-
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const LoginForm()));
-              },
-                            child: const Icon(
-                              Icons.logout,
-                              color: Colors.white),
-                          ),
-                        )
-                      ]
-                    ),
-                  ),
-                  //main dio stranice
                   Container(
                     width: MediaQuery.of(context).size.width * 0.65,
                     height: MediaQuery.of(context).size.height *0.75,
@@ -220,9 +48,31 @@ class _IronPageState extends State<IronPage> {
                           ),
                     child: Column(
                       children: [
-                        ElevatedButton.icon(onPressed: () {
-                          dodajUredaj(context);
-                        }, label: const Text("Add new device"), icon: const Icon(Icons.add),),
+                        Row(
+                          children: [
+                             Padding(
+                               padding: const EdgeInsets.only(
+                                left: 20,
+                               ),
+                               child: InkWell(
+                                                         onTap: () {
+                                      Navigator.of(context).pop();
+                                                         },
+                                                         child: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.white),
+                                                       ),
+                             ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.23,
+                              ),
+                              child: ElevatedButton.icon(onPressed: () {
+                                dodajUredaj(context);
+                              }, label: const Text("Add new device"), icon: const Icon(Icons.add),),
+                            ),
+                          ],
+                        ),
                          Padding(
                           padding: const EdgeInsets.only(
                             top: 40
@@ -289,7 +139,7 @@ class _IronPageState extends State<IronPage> {
                           setState(() {
                           objekat = snapshot.data![index];
                             selectedIndex = index;
-                            Navigator.of(context).push(
+                            Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => IronPage(selectedIndex, objekat),
                                       ),
@@ -297,7 +147,7 @@ class _IronPageState extends State<IronPage> {
                           });
                         },
               child: ListTile(
-                tileColor: Color.fromARGB(255, 200, 198, 213),
+                tileColor: const Color.fromARGB(255, 200, 198, 213),
                 leading: const Icon(Icons.perm_device_information, color: Color(0xfff8a55f)),
                 title: Text("Naziv: ${snapshot.data![index].naziv}"),
               ),
@@ -314,129 +164,14 @@ class _IronPageState extends State<IronPage> {
                       ],
                     ),
                   ),
-                  //osnovni health podaci o osobi
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.025,
-                    ),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      height: MediaQuery.of(context).size.height *0.75,
-                      decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 16, 28, 66),
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 16, 28, 66),
-                            ),
-                            borderRadius: const BorderRadius.all(Radius.circular(18))
-                          ),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 40,
-                                right: 40,
-                                top: 40),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  border: BorderDirectional(
-                                    bottom: BorderSide(color: Colors.white, width: 1))),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.monitor_heart, size: 60, color: Color.fromARGB(255,180,0,0)),
-                                    Column(
-                                      children: [
-                                        const Text("Blood pressure", style: TextStyle(fontSize: 19, color: Color.fromARGB(255,180,0,0)),),
-                                        Text("$pritisakGornji/$pritisakDonji mmHg", style: const TextStyle(fontSize: 19, color: Colors.white),),
-                                      ],
-                                    )
-                                ]),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 40,
-                                right: 40,
-                                top: 40),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  border: BorderDirectional(
-                                    bottom: BorderSide(color: Colors.white, width: 1))),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.trending_up, size: 60, color: Color.fromARGB(255,180,0,0)),
-                                    Column(
-                                      children: [
-                                        const Text("Heart rate", style: TextStyle(fontSize: 19, color: Color.fromARGB(255,180,0,0)),),
-                                        Text("$bpm bPm", style: const TextStyle(fontSize: 19, color: Colors.white),),
-                                      ],
-                                    )
-                                ]),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 40,
-                                right: 40,
-                                top: 80),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  border: BorderDirectional(
-                                    bottom: BorderSide(color: Colors.white, width: 1))),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.personal_injury, size: 60, color: Color.fromARGB(255, 170, 139, 26)),
-                                    Column(
-                                      children: [
-                                        const Text("Fall sensor", style: TextStyle(fontSize: 19, color: Color.fromARGB(255, 170, 139, 26)),),
-                                        const Text("False", style: TextStyle(fontSize: 19, color: Colors.white),),
-                                      ],
-                                    )
-                                ]),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 40,
-                                right: 40,
-                                top: 40),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  border: BorderDirectional(
-                                    bottom: BorderSide(color: Colors.white, width: 1))),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.smoke_free, size: 60, color: Color.fromARGB(255, 170, 139, 26)),
-                                    Column(
-                                      children: [
-                                        const Text("Smoke detector", style: TextStyle(fontSize: 19, color: Color.fromARGB(255, 170, 139, 26)),),
-                                        const Text("False", style: TextStyle(fontSize: 19, color: Colors.white),),
-                                      ],
-                                    )
-                                ]),
-                              ),
-                            ),
-                        ],)
-                      )
-                    ),
-                  ),
+                  
                 ],
               )
-            ],
-          ),
-        ),
     );
   }
-  getRandNumber(){
-    Random random = Random();
-    setState(() {
-      bpm = random.nextInt(30) +60 ;
-      pritisakGornji = random.nextInt(50) + 100;
-      pritisakDonji = random.nextInt(40) + 60;
-    });
-  }
+
 dodajUredaj(BuildContext context){
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   TextEditingController nazivController = TextEditingController();
   showDialog(
   context: context,
@@ -450,7 +185,7 @@ dodajUredaj(BuildContext context){
         height: MediaQuery.of(context).size.height * 0.3,
         width: MediaQuery.of(context).size.width *0.4,
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -482,7 +217,7 @@ dodajUredaj(BuildContext context){
           
           onPressed: () { 
             Navigator.of(context).pop();
-             if (_formKey.currentState!.validate()){
+             if (formKey.currentState!.validate()){
                 addDevice(nazivController);
             }
           }
@@ -493,9 +228,6 @@ dodajUredaj(BuildContext context){
 );
 }
 }
-
-
-getCategories(){}
 
 addDevice(nazivController) async {
   var data = RoleUtil.getData();
@@ -512,8 +244,6 @@ addDevice(nazivController) async {
         }));
     return int.parse(response.body);
     }
-
-getUredajByKategorija(String? kategorija){}
 
 Future<List<Iron>> fetch() async{
   var data = RoleUtil.getData();
